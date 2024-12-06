@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Bdts" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Ctool" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Form" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Form/Control" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Member" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Module" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Module/Extends" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Module/Temps/Module" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/News" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Safe" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Sitemap" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Tag" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Tpl" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Ueditor" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/App/Weblog" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/CodeIgniter" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/CodeIgniter/Extend" isTestSource="false" packagePrefix="Frame" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/CodeIgniter/System" isTestSource="false" packagePrefix="CodeIgniter" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/CodeIgniter/System/ThirdParty" isTestSource="false" packagePrefix="Laminas" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/CodeIgniter/System/ThirdParty" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/Fcms" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/Fcms/Core" isTestSource="false" packagePrefix="Phpcmf" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/Laravel/Extend" isTestSource="false" packagePrefix="Frame" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/Laravel/System" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/ThinkPHP/System" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dayrui/ThirdParty" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
