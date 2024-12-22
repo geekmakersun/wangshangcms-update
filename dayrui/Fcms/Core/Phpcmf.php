@@ -1,8 +1,8 @@
 <?php namespace Phpcmf;
 
 /**
- * www.xunruicms.com
- * 迅睿内容管理框架系统（简称：迅睿CMS）
+ * https://www.junke158.cn
+ * 君科云CMS
  * 本文件是框架系统文件，二次开发时不可以修改本文件
  **/
 
@@ -914,7 +914,7 @@ abstract class Common extends \Frame\Controller {
         // 加载模块自身的
         if (APP_DIR) {
             if (is_file(APPPATH.'Config/C'.$pos.$endfix.'.php')) {
-                $local[APP_DIR] = [APPPATH.'Config/C'.$pos.$endfix.'.php'];
+                $local[APP_DIR] = [APPPATH];
             } else {
                 // 排除模块自身
                 if (isset($local[APP_DIR])) {
@@ -924,6 +924,9 @@ abstract class Common extends \Frame\Controller {
         }
 
         $data = [];
+        if ($pos == 'bottom') {
+            $data = $row; // 底部自定义菜单写入
+        }
         foreach ($local as $dir => $path) {
             $ck = 0;
             // 判断插件目录

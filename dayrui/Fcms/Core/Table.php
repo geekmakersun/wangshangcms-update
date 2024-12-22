@@ -1,7 +1,7 @@
 <?php namespace Phpcmf;
 /**
- * www.xunruicms.com
- * 迅睿内容管理框架系统（简称：迅睿CMS）
+ * https://www.junke158.cn
+ * 君科云CMS
  * 本文件是框架系统文件，二次开发时不可以修改本文件
  **/
 
@@ -928,6 +928,9 @@ class Table extends \Phpcmf\Common {
     protected function _Recycle_Init() {
         $table = $this->init['table'];
         $rtable = $table.'_recycle';
+        if (strpos($rtable, '_recycle_recycle')) {
+            $rtable = str_replace($rtable, '_recycle_recycle', '_recycle');
+        }
         if (!$this->_db()->is_table_exists($rtable)) {
             // 回收表不存在时创建新表
             $this->_db()->query('

@@ -21,7 +21,7 @@ foreach ($array as $name) {
             $tid = (int)file_get_contents($cfile);
             $sql[] = '`'.XR_M()->dbprefix($system['site'].'_{xunruicms_mid}').'`.id in (select cid from `'.XR_M()->dbprefix($system['site'].'_tag_{xunruicms_mid}').'` where tid='.$tid.')';
         } else {
-            $sql[] = '(`title` LIKE "%'.dr_safe_replace($name).'%" OR `'.$tfield.'` LIKE "%'.dr_safe_replace($name).'%")';
+            $sql[] = '(`title` LIKE \'%'.dr_safe_replace($name).'%\' OR `'.$tfield.'` LIKE \'%'.dr_safe_replace($name).'%\')';
         }
 
     }

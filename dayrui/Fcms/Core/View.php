@@ -1,7 +1,7 @@
 <?php namespace Phpcmf;
 /**
- * www.xunruicms.com
- * 迅睿内容管理框架系统（简称：迅睿CMS）
+ * https://www.junke158.cn
+ * 君科云CMS
  * 本文件是框架系统文件，二次开发时不可以修改本文件
  **/
 
@@ -295,6 +295,7 @@ class View {
             if (!$is_dev) {
                 unset($this->_options);
             }
+            \Phpcmf\Service::M()->close();
         }
     }
 
@@ -1549,7 +1550,7 @@ class View {
                                    } else {
                                        $value = '%'.trim($value, '%').'%'; // 首尾%查询
                                    }
-                                   $vals[]= "{$t['name']} LIKE \"".$value."\"";
+                                   $vals[]= "{$t['name']} LIKE '".$value."'";
                                }
                            }
                         }
@@ -1564,7 +1565,7 @@ class View {
                         $str = '';
                         foreach ($arr as $a) {
                             if (!is_numeric($a)) {
-                                $str.= ',"'.$a.'"';
+                                $str.= ',\''.$a.'\'';
                             } else {
                                 $str.= ','.$a;
                             }
@@ -1577,7 +1578,7 @@ class View {
                         $str = '';
                         foreach ($arr as $a) {
                             if (!is_numeric($a)) {
-                                $str.= ',"'.$a.'"';
+                                $str.= ',\''.$a.'\'';
                             } else {
                                 $str.= ','.$a;
                             }

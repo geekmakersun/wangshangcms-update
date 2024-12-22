@@ -26,7 +26,7 @@ class Api extends \Phpcmf\Common
         $prefix = dr_module_table_prefix($dir);
         if (is_dir(dr_get_app_dir($dir))) {
             $this->_module_init($dir);
-            $t1 = \Phpcmf\Service::M()->table($prefix)->where($this->content_model->get_admin_list_where($prefix))->where('DATEDIFF(from_unixtime(inputtime),now())=0')->counts();
+            $t1 = \Phpcmf\Service::M()->table($prefix)->where($this->content_model->get_admin_list_where($prefix))->where_date('inputtime', 0)->counts();
             $t2 = \Phpcmf\Service::M()->table($prefix)->where($this->content_model->get_admin_list_where($prefix))->counts();
             $t3 = \Phpcmf\Service::M()->table($prefix.'_verify')->where($this->content_model->get_admin_list_verify_where($this->content_model->get_admin_list_where($prefix.'_verify')))->counts();
             $t4 = \Phpcmf\Service::M()->table($prefix.'_recycle')->where($this->content_model->get_admin_list_where($prefix.'_recycle'))->counts();

@@ -1,10 +1,10 @@
 <?php
 /**
- * www.xunruicms.com
- * 迅睿内容管理框架系统（简称：迅睿CMS）
+ * https://www.junke158.cn
+ * 君科云CMS
  * 本文件是框架系统文件，二次开发时不可以修改本文件
  *
- * (c) 四川迅睿云软件开发有限公司 <q@xunruicms.com>
+ * (c) 君科云CMS
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.

@@ -1,11 +1,15 @@
 <?php namespace Phpcmf;
 /**
- * www.xunruicms.com
- * 迅睿内容管理框架系统（简称：迅睿CMS）
+ * https://www.junke158.cn
+ * 君科云CMS
  * 本文件是框架系统文件，二次开发时不可以修改本文件
  **/
 
-require FRAMEPATH.'Extend/Model.php';
+if (is_file(MYPATH.'Extend/Model.php')) {
+    require MYPATH.'Extend/Model.php';
+} else {
+    require FRAMEPATH.'Extend/Model.php';
+}
 
 // 模型类
 class Model {
@@ -133,13 +137,13 @@ class Model {
 
     // 附表不存在时创建附表
     public function is_data_table($table, $tid) {
-        if ($tid > 0 && !$this->db->query("SHOW TABLES LIKE '".$this->dbprefix($table.$tid)."'")->getRowArray()) {
+        if ($tid > 0 && !$this->is_table_exists($this->dbprefix($table.$tid))) {
             // 附表不存在时创建附表
-            $sql = $this->db->query("SHOW CREATE TABLE `".$this->dbprefix($table)."0`")->getRowArray();
+            list($a, $sql, $name) = \Phpcmf\Service::M('table')->create_table_sql($this->dbprefix($table).'0');
             $this->db->query(str_replace(
-                array($sql['Table'], 'CREATE TABLE '),
+                array($name, 'CREATE TABLE '),
                 array($this->dbprefix($table.$tid), 'CREATE TABLE IF NOT EXISTS '),
-                $sql['Create Table']
+                $sql
             ));
         }
         $this->_clear();
@@ -673,7 +677,7 @@ class Model {
             }
         } elseif (isset($field['fieldtype']) && $field['fieldtype'] == 'File'
             && $field['fieldname'] == 'thumb' && $value == 1) {
-            return '`'.$table.'`.`'.$name.'` <> ""';
+            return '`'.$table.'`.`'.$name.'` <> \'\'';
         } elseif (isset($field['fieldtype']) && strpos($field['fieldtype'], 'map') !== false) {
             // 地图
             list($a, $km) = explode('|', $value);
@@ -737,7 +741,7 @@ class Model {
                             if ($id) {
                                 if (version_compare(\Phpcmf\Service::M()->db->getVersion(), '5.7.0') < 0) {
                                     // 兼容写法
-                                    $where[] = '`'.$table.'`.`'.$name.'` LIKE "%\"'.intval($id).'\"%"';
+                                    $where[] = '`'.$table.'`.`'.$name.'` LIKE \'%\"'.intval($id).'\"%\'';
                                 } else {
                                     // 高版本写法
                                     $where[] = "(CASE WHEN JSON_VALID(`{$table}`.`{$name}`) THEN JSON_CONTAINS (`{$table}`.`{$name}`->'$[*]', '\"".intval($id)."\"', '$') ELSE null END)";
@@ -747,7 +751,7 @@ class Model {
                     } else {
                         if (version_compare(\Phpcmf\Service::M()->db->getVersion(), '5.7.0') < 0) {
                             // 兼容写法
-                            $where[] = '`'.$table.'`.`'.$name.'` LIKE "%\"'.intval($data['ii']).'\"%"';
+                            $where[] = '`'.$table.'`.`'.$name.'` LIKE \'%\"'.intval($data['ii']).'\"%\'';
                         } else {
                             // 高版本写法
                             $where[] = "(CASE WHEN JSON_VALID(`{$table}`.`{$name}`) THEN JSON_CONTAINS (`{$table}`.`{$name}`->'$[*]', '\"".intval($data['ii'])."\"', '$') ELSE null END)";
@@ -781,7 +785,7 @@ class Model {
                 if ($val) {
                     if (version_compare(\Phpcmf\Service::M()->db->getVersion(), '5.7.0') < 0) {
                         // 兼容写法
-                        $where[] = '`'.$table.'`.`'.$name.'` LIKE "%\"'.$this->db->escapeString(dr_safe_replace($val), true).'\"%"';
+                        $where[] = '`'.$table.'`.`'.$name.'` LIKE \'%\"'.$this->db->escapeString(dr_safe_replace($val), true).'\"%\'';
                     } else {
                         // 高版本写法
                         $where[] = "(CASE WHEN JSON_VALID(`{$table}`.`{$name}`) THEN JSON_CONTAINS (`{$table}`.`{$name}`->'$[*]', '\"".$this->db->escapeString(dr_safe_replace($val), true)."\"', '$') ELSE null END)";
@@ -823,7 +827,7 @@ class Model {
                 if (is_numeric($val)) {
                     $where[] = '`'.$table.'`.`'.$name.'`='.$val;
                 } else {
-                    $where[] = '`'.$table.'`.`'.$name.'`="'.dr_safe_replace($val, ['\\', '/']).'"';
+                    $where[] = '`'.$table.'`.`'.$name.'`=\''.dr_safe_replace($val, ['\\', '/']).'\'';
                 }
             }
             return $where ? '('.implode(strpos($value,  '||') !== false ? ' AND ' : ' OR ', $where).')' : '`'.$table.'`.`id` = 0';
@@ -844,18 +848,18 @@ class Model {
             // like 条件
             $arr = explode('%', str_replace(' ', '%', $value));
             if (count($arr) == 1) {
-                return '`'.$table.'`.`'.$name.'` LIKE "%'.trim($this->db->escapeString($value, true), '%').'%"';
+                return '`'.$table.'`.`'.$name.'` LIKE \'%'.trim($this->db->escapeString($value, true), '%').'%\'';
             } else {
                 $wh = [];
                 foreach ($arr as $c) {
-                    $c && $wh[] = '`'.$table.'`.`'.$name.'` LIKE "%'.trim($this->db->escapeString($c, true)).'%"';
+                    $c && $wh[] = '`'.$table.'`.`'.$name.'` LIKE \'%'.trim($this->db->escapeString($c, true)).'%\'';
                 }
                 return $wh ? ('('.implode(strpos($value,  '%%') !== false ? ' AND ' : ' OR ', $wh).')') : '';
             }
         } elseif (is_numeric($value)) {
             return '`'.$table.'`.`'.$name.'`='.$value;
         } else {
-            return '`'.$table.'`.`'.$name.'`="'.dr_safe_replace($value, ['\\', '/']).'"';
+            return '`'.$table.'`.`'.$name.'`=\''.dr_safe_replace($value, ['\\', '/']).'\'';
         }
     }
 
@@ -1153,6 +1157,26 @@ class Model {
         return $this;
     }
 
+    public function where_date($name, $value) {
+
+        if (!$name) {
+            return $this;
+        }
+
+        //$where = 'DATEDIFF(from_unixtime('.$name.'),now())='.$value;
+        $where = '';
+        if (!$value) {
+            // 今天
+            $stime = strtotime(date('Y-m-d', SYS_TIME).' 00:00:00');
+            $etime = strtotime(date('Y-m-d 23:59:59', $stime));
+            $where = $name." BETWEEN ".$stime." AND ".$etime;
+        }
+
+        $this->param['where'][] = $where;
+
+        return $this;
+    }
+
     /**
      * 指定查询数量
      * @access public
@@ -1261,6 +1285,13 @@ class Model {
         $this->_clear();
 
         return $rt;
+    }
+
+    // 关闭数据库
+    public function close() {
+        if (method_exists($this->db, 'close')) {
+            $this->db->close();
+        }
     }
 
     private function _clear() {

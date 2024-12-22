@@ -1247,11 +1247,11 @@ class Module extends \Phpcmf\Model {
             && $this->table('admin_menu')->where('uri', 'module/site_param/index')->counts()) {
             $this->table('admin_menu')->where('uri', 'site_param/index')->delete();
         }
-        $this->table('admin_menu')->update(0, ['uri' => 'module/site_config/index'], 'uri="site_config/index"');
-        $this->table('admin_menu')->update(0, ['uri' => 'module/site_mobile/index'], 'uri="site_mobile/index"');
-        $this->table('admin_menu')->update(0, ['uri' => 'module/site_domain/index'], 'uri="site_domain/index"');
-        $this->table('admin_menu')->update(0, ['uri' => 'module/site_image/index'], 'uri="site_image/index"');
-        $this->table('admin_menu')->update(0, ['name' => '网站设置'], 'mark="config-web"');
+        $this->table('admin_menu')->update(0, ['uri' => 'module/site_config/index'], 'uri=\'site_config/index\'');
+        $this->table('admin_menu')->update(0, ['uri' => 'module/site_mobile/index'], 'uri=\'site_mobile/index\'');
+        $this->table('admin_menu')->update(0, ['uri' => 'module/site_domain/index'], 'uri=\'site_domain/index\'');
+        $this->table('admin_menu')->update(0, ['uri' => 'module/site_image/index'], 'uri=\'site_image/index\'');
+        $this->table('admin_menu')->update(0, ['name' => '网站设置'], 'mark=\'config-web\'');
 
         return;
     }

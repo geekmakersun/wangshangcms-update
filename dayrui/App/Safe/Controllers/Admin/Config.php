@@ -39,6 +39,8 @@ class Config extends \Phpcmf\Common
             $system['SYS_ADMIN_LOGIN_TIME'] = $post_system['SYS_ADMIN_LOGIN_TIME'];
             $system['SYS_ADMIN_LOGINS'] = $post_system['SYS_ADMIN_LOGINS'];
             $system['SYS_ADMIN_LOGIN_AES'] = $post_system['SYS_ADMIN_LOGIN_AES'];
+            $system['SYS_ADMIN_SMS_LOGIN'] = $post_system['SYS_ADMIN_SMS_LOGIN'];
+            $system['SYS_ADMIN_SMS_CHECK'] = $post_system['SYS_ADMIN_SMS_CHECK'];
             \Phpcmf\Service::M('System')->save_config($system, $system);
 
             $post = \Phpcmf\Service::L('input')->post('data');

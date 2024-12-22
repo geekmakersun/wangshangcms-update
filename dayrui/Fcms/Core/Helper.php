@@ -1,7 +1,7 @@
 <?php
 /**
- * www.xunruicms.com
- * 迅睿内容管理框架系统（简称：迅睿CMS）
+ * https://www.junke158.cn
+ * 君科云CMS
  * 本文件是框架系统文件，二次开发时不可以修改本文件
  **/
 
@@ -2516,7 +2516,7 @@ function dr_now_url() {
  */
 function dr_code($width, $height, $url = '') {
     $url = dr_web_prefix('index.php?s=api&c=api&m=captcha&width='.$width.'&height='.$height);
-    return '<img align="absmiddle" style="cursor:pointer;" onclick="this.src=\''.$url.'&\'+Math.random();" src="'.$url.'" />';
+    return '<img align="absmiddle" style="cursor:pointer;" onclick="this.src=\''.$url.'&t=\'+Math.random();" src="'.$url.'" />';
 }
 
 /**

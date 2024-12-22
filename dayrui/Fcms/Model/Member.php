@@ -1,7 +1,7 @@
 <?php namespace Phpcmf\Model;
 /**
- * www.xunruicms.com
- * 迅睿内容管理框架系统（简称：迅睿CMS）
+ * https://www.junke158.cn
+ * 君科云CMS
  * 本文件是框架系统文件，二次开发时不可以修改本文件，可以通过继承类方法来重写此文件
  **/
 
@@ -375,7 +375,13 @@ class Member extends \Phpcmf\Model {
 
         if (is_file(WRITEPATH.'config/domain_sso.php')) {
             $sso = require WRITEPATH.'config/domain_sso.php';
+            $rts = [];
             foreach ($sso as $u) {
+                list($a) = explode(',', $u);
+                if (in_array($a, $rts)) {
+                    continue;
+                }
+                $rts[] = $a;
                 $this->sso_url[] = $u ? dr_http_prefix($u).'/' : '/';
             }
         }

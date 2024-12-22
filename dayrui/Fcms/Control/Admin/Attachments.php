@@ -1,7 +1,7 @@
 <?php namespace Phpcmf\Control\Admin;
 /**
- * www.xunruicms.com
- * 迅睿内容管理框架系统（简称：迅睿CMS）
+ * https://www.junke158.cn
+ * 君科云CMS
  * 本文件是框架系统文件，二次开发时不可以修改本文件
  **/
 
@@ -305,7 +305,8 @@ class Attachments extends \Phpcmf\Table {
         if (!$rt['code']) {
             exit(dr_array2string($rt));
         }
-
+        \Phpcmf\Service::M()->table('attachment_data')->update($id, ['filesize' => $rt['data']['size']]);
+        \Phpcmf\Service::M()->table('attachment_unused')->update($id, ['filesize' => $rt['data']['size']]);
         $this->_json(1, dr_lang('上传成功'), $rt['data']);
     }
 }

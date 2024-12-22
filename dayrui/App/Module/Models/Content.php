@@ -1171,7 +1171,7 @@ class Content extends \Phpcmf\Model {
 
             }
 
-            if (dr_is_app('cqx')
+            if (IS_ADMIN && dr_is_app('cqx')
                 && \Phpcmf\Service::M('content', 'cqx')->is_edit($row['catid'], $row['uid'])) {
                 log_message('error', dr_lang('删除内容（%s）：当前角色无权限管理此栏目', $id));
                 continue;

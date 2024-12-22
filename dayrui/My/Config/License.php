@@ -3,12 +3,12 @@
 return [
 
     'oem' => '216',
-    'name' => '网商CMS',
-    'cms' => '网商CMS',
-    'url' => 'https://www.wsw88.cn',
-    'domain' => 'https://www.wsw88.cn',
-    'cloud' => 'https://www.wsw88.cn',
-    'service' => 'https://www.wsw88.cn',
+    'name' => '君科云CMS',
+    'cms' => '君科云CMS',
+    'url' => 'https://www.junke158.cn',
+    'domain' => 'https://www.junke158.cn',
+    'cloud' => 'https://www.junke158.cn',
+    'service' => 'https://www.junke158.cn',
     'license' => '5E632913BF096E49880CF8B92D53C99711',
 
 ];
