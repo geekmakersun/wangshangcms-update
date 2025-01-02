@@ -53,16 +53,29 @@ class Tag extends \Phpcmf\Model
         $module = \Phpcmf\Service::L('cache')->get('module-'.SITE_ID.'-content');
         foreach ($module as $t) {
             $tfield = \Phpcmf\Service::M('tag', 'tag')->tag_field($t['dirname']);
+            $sql = 'select id from '
+                .$this->dbprefix(SITE_ID.'_'.$t['dirname'])
+                .' where FIND_IN_SET("'.$name.'", `'.$tfield.'`) limit 50;';
+            $rows = $this->db->query($sql)->getResultArray();
+            if ($rows) {
+                $cid = '';
+                foreach ($rows as $r) {
+                    $cid.= $r['id'].',';
+                }
+                $cid = trim($cid, ',');
+                $file = $this->link_cache.'index_'.SITE_ID.'/'.$t['dirname'].'-'.md5($name).'.php';
+                file_put_contents($file, trim($cid, ','));
+            }
+            /*
             $sql = 'replace into '.$this->dbprefix(SITE_ID.'_tag_'.$t['dirname'])
                 .' (cid, tid) select id,"'.$data['id'].'" from '
                 .$this->dbprefix(SITE_ID.'_'.$t['dirname'])
-                .' where FIND_IN_SET("'.$name.'", `'.$tfield.'`)';
+                .' where FIND_IN_SET("'.$name.'", `'.$tfield.'`);';
             if ($ct) {
                 file_put_contents(WRITEPATH.'app/tag.sql', $sql.PHP_EOL, FILE_APPEND);
             } else {
                 $this->query($sql);
             }
-            /*
             $list = $this->table_site($t['dirname'])->where('FIND_IN_SET("'.$name.'", `'.$tfield.'`)')->select('id')->getAll();
             if ($list) {
                 foreach ($list as $a) {
@@ -74,9 +87,9 @@ class Tag extends \Phpcmf\Model
             }*/
         }
 
-        dr_mkdirs($this->link_cache.'index_'.SITE_ID.'/');
-        $file = $this->link_cache.'index_'.SITE_ID.'/'.md5($name).'.php';
-        file_put_contents($file, $data['id']);
+        //dr_mkdirs($this->link_cache.'index_'.SITE_ID.'/');
+        //$file = $this->link_cache.'index_'.SITE_ID.'/'.md5($name).'.php';
+        //file_put_contents($file, $data['id']);
 
     }
 
@@ -231,7 +244,7 @@ class Tag extends \Phpcmf\Model
     }
 
     // 内容自动存储到tag
-    public function auto_save_tag($data) {
+    public function auto_save_tag($data, $page = 0, $fzs = 0) {
 
         $tfield = \Phpcmf\Service::M('tag', 'tag')->tag_field(MOD_DIR);
 
@@ -244,14 +257,26 @@ class Tag extends \Phpcmf\Model
             return;
         }
 
+        $go = 0;
         $arr = explode(',', $tag);
+        if ($fzs && count($arr) > $fzs) {
+            // 分割开来入库
+            $chunks = array_chunk($arr, $fzs);
+            if (isset($chunks[$page])) {
+                $go = 1;
+                $arr = $chunks[$page];
+            } else {
+                return; // 没有了
+            }
+        }
+
         foreach ($arr as $t) {
             if ($t) {
                 $t = trim(dr_safe_replace($t));
                 $yq = $this->table($this->tablename)->where('name', $t)->getRow();
                 if ($yq) {
                     // 已经存在
-                    if (is_file(IS_USE_MODULE.'Models/Repair.php')) {
+                    if (!$fzs && is_file(IS_USE_MODULE.'Models/Repair.php')) {
                         $this->save_index($yq);
                     }
                     continue;
@@ -285,6 +310,10 @@ class Tag extends \Phpcmf\Model
                     }
                 }
             }
+        }
+
+        if ($fzs) {
+            return $go;
         }
 
         // 更新数据

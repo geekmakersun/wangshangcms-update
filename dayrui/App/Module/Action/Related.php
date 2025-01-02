@@ -14,22 +14,41 @@ if (isset($param['tfield']) && $param['tfield']) {
     unset($param['tfield']);
 }
 
+if (!$system['num']) {
+    $system['num'] = 10;
+}
+
+$in = '';
 foreach ($array as $name) {
     if ($name) {
-        $cfile = WRITEPATH.'tags/index_'.SITE_ID.'/'.md5($name).'.php';
+        $cfile = WRITEPATH.'tags/index_'.SITE_ID.'/'.$system['dirname'].'-'.md5($name).'.php';
         if (is_file($cfile)) {
-            $tid = (int)file_get_contents($cfile);
-            $sql[] = '`'.XR_M()->dbprefix($system['site'].'_{xunruicms_mid}').'`.id in (select cid from `'.XR_M()->dbprefix($system['site'].'_tag_{xunruicms_mid}').'` where tid='.$tid.')';
+            $in.= ','.trim((string)file_get_contents($cfile), ',');
+            //$sql[] = '`'.XR_M()->dbprefix($system['site'].'_{xunruicms_mid}').'`.id in (select cid from `'.XR_M()->dbprefix($system['site'].'_tag_{xunruicms_mid}').'` where tid='.$tid.')';
         } else {
             $sql[] = '(`title` LIKE \'%'.dr_safe_replace($name).'%\' OR `'.$tfield.'` LIKE \'%'.dr_safe_replace($name).'%\')';
         }
 
     }
 }
-$sql && $where['my_related'] = [
-    'adj' => 'SQL',
-    'value' => '('.implode(' OR ', $sql).')'
-];
+
+if ($in) {
+    $arr = explode(',', trim($in, ','));
+    $in = '0';
+    $in = implode(',', dr_arraycut($arr, $system['num']));
+
+    $where['my_related'] = [
+        'adj' => 'SQL',
+        'value' => ' id in ('.$in.')'
+    ];
+    //$form_attr = ' INNER JOIN `'.XR_M()->dbprefix($system['site'].'_tag_{xunruicms_mid}').'` on `'.XR_M()->dbprefix($system['site'].'_{xunruicms_mid}').'`.id = `'.XR_M()->dbprefix($system['site'].'_tag_{xunruicms_mid}').'`.cid';
+} elseif ($sql) {
+    $where['my_related'] = [
+        'adj' => 'SQL',
+        'value' => '('.implode(' OR ', $sql).')'
+    ];
+}
+
 unset($param['tag']);
 if (isset($where['tag'])) {
     unset($where['tag']);

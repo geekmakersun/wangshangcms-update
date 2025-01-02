@@ -224,7 +224,7 @@ class Home extends \Phpcmf\Table
         $ct = (int)\Phpcmf\Service::L('input')->get('ct');
         $page = (int)\Phpcmf\Service::L('input')->get('page');
         $total = (int)\Phpcmf\Service::L('input')->get('total');
-        $psize = $this->pconfig['limit_index'] ? $this->pconfig['limit_index'] : 50; // 每页处理的数量
+        $psize = $this->pconfig['limit_index'] ? $this->pconfig['limit_index'] : 20; // 每页处理的数量
 
         if (!$page) {
             // 计算数量
@@ -238,7 +238,11 @@ class Home extends \Phpcmf\Table
             file_put_contents(WRITEPATH.'app/tag.sql', '');
             $url = dr_url('tag/home/'.\Phpcmf\Service::L('Router')->method);
 
+            $this->_html_msg(1, dr_lang('正在执行中...'), $url.'&total='.$total.'&page='.($page+1));
+            /*
             $tpage = ceil($total / $psize); // 总页数
+
+
             if ($tpage > 50) {
                 $sd = $url.'&total='.$total.'&ct=1&page='.($page+1);
                 $zd = $url.'&total='.$total.'&page='.($page+1);
@@ -249,7 +253,7 @@ class Home extends \Phpcmf\Table
             } else {
                 $this->_html_msg(1, dr_lang('正在执行中...'), $url.'&total='.$total.'&page='.($page+1));
             }
-
+                */
         }
 
         $tpage = ceil($total / $psize); // 总页数
@@ -257,14 +261,19 @@ class Home extends \Phpcmf\Table
         // 更新完成
         if ($page > $tpage) {
             \Phpcmf\Service::M('cache')->sync_cache();
+            $this->_html_msg(1, dr_lang('更新完成'));
+            /*
             if ($ct) {
                 $this->_html_msg(1, '请下载<a href="'.dr_url('tag/home/down_index').'">【SQL文件】</a>手动导入到本数据库中');
             } else {
                 $this->_html_msg(1, dr_lang('更新完成'));
-            }
+            }*/
         }
 
-        $data = \Phpcmf\Service::M()->db->table(SITE_ID.'_tag')->limit($psize, $psize * ($page - 1))->orderBy('id DESC')->get()->getResultArray();
+        $data = \Phpcmf\Service::M()->db->table(SITE_ID.'_tag')
+            ->limit($psize, $psize * ($page - 1))
+            ->orderBy('id DESC')
+            ->get()->getResultArray();
         foreach ($data as $t) {
             \Phpcmf\Service::M('tag', 'tag')->save_index($t, $ct);
         }
@@ -280,7 +289,7 @@ class Home extends \Phpcmf\Table
     public function url_edit() {
 
         $page = (int)\Phpcmf\Service::L('input')->get('page');
-        $psize = $this->pconfig['limit_update'] ? $this->pconfig['limit_update'] : 500; // 每页处理的数量
+        $psize = $this->pconfig['limit_update'] ? $this->pconfig['limit_update'] : 300; // 每页处理的数量
         $total = (int)\Phpcmf\Service::L('input')->get('total');
 
         if (!$page) {
@@ -321,7 +330,8 @@ class Home extends \Phpcmf\Table
 
         $mid = dr_safe_filename(\Phpcmf\Service::L('input')->get('mid'));
         $page = (int)\Phpcmf\Service::L('input')->get('page');
-        $psize = $this->pconfig['limit_add'] ? $this->pconfig['limit_add'] : 50; // 每页处理的数量
+        $cpage = (int)\Phpcmf\Service::L('input')->get('cpage');
+        $psize = $this->pconfig['limit_add'] ? $this->pconfig['limit_add'] : 1; // 每页处理的数量
         $total = (int)\Phpcmf\Service::L('input')->get('total');
 
         if (!$page) {
@@ -348,7 +358,13 @@ class Home extends \Phpcmf\Table
         $data = \Phpcmf\Service::M()->db->table(SITE_ID.'_'.$mid)->limit($psize, $psize * ($page - 1))->orderBy('id DESC')->get()->getResultArray();
         foreach ($data as $t) {
             if (isset($t[$tfield]) && $t[$tfield]) {
-                \Phpcmf\Service::M('Tag', 'tag')->auto_save_tag([1=>$t]);
+                $res = \Phpcmf\Service::M('Tag', 'tag')->auto_save_tag([1=>$t], $cpage, 10);
+                if ($res) {
+                    $this->_html_msg( 1, dr_lang('正在执行中【%s】...', "$tpage/$page"),
+                        dr_url('tag/home/'.\Phpcmf\Service::L('Router')->method, ['mid' => $mid,'total' => $total, 'cpage' => $cpage + 1, 'page' => $page]),
+                        '正在分组执行（'.($cpage+1).'）'
+                    );
+                }
             }
         }
 

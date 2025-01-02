@@ -122,12 +122,12 @@
                             {loop $return_s $s}
                             {php $tb='tag_'.$s['dirname'];}
                             <li>
-                                <a href="javascript:dr_iframe_show('{$t.name} - {$s.name}', '{dr_url('tag/home/module_index', ['mid'=>$s.dirname, 'tid'=>$t.id])}');">{$s.name}（{count action=table table_site=$tb tid=$t.id}） </a>
+                                <a href="javascript:;">{$s.name}（{dr_tag_count($s.dirname, $t.name)}） </a>
                             </li>
                             {/loop}
                         </ul>
                     </div>
-                    <div class="btn-group" style="margin-top: 2px; margin-left: 90px">
+                    <div class="btn-group" style="margin-top: 2px; margin-left: 90px;display: none">
                         <button class="btn btn-xs green dropdown-toggle" type="button" data-hover="dropdown" data-toggle="dropdown" aria-expanded="false"> 关联内容
                             <i class="fa fa-angle-down"></i>
                         </button>
@@ -144,13 +144,13 @@
                     {loop $return_s $s}
                     {php $tb='tag_'.$s['dirname'];}
                     <label>
-                        <a class="btn btn-xs blue" href="javascript:dr_iframe_show('{$t.name} - {$s.name}', '{dr_url('tag/home/module_index', ['mid'=>$s.dirname, 'tid'=>$t.id])}');">{$s.name}（{count action=table table_site=$tb tid=$t.id}） </a>
+                        <a class="btn btn-xs blue" href="javascript:;">{$s.name}（{dr_tag_count($s.dirname, $t.name)}） </a>
                     </label>
                     {/loop}
 
                     {loop $return_s $s}
                     {php $tb='tag_'.$s['dirname'];}
-                    <label>
+                    <label style="display: none">
                         <a class="btn btn-xs green" href="javascript:dr_add_related('{$t.name} - {$s.name}', '{$rurl}&module={$s.dirname}', '{dr_url('tag/home/module_index', ['mid'=>$s.dirname, 'tid'=>$t.id])}');">添加{$s.name}</a>
                     </label>
                     {/loop}
