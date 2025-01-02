@@ -1,0 +1,4 @@
+.page-sidebar .jstree-default {
+	overflow-y: auto;
+	height: 98vh;
+}
